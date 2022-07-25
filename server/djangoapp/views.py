@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
-# from .restapis import related methods
+from .models import *
+from .restapis import *
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -91,14 +91,32 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
-    context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/index.html', context)
+        url = "https://aa116696.us-south.apigw.appdomain.cloud/api/dealerships/api/dealerships"
+        # Get dealers from the URL
+        dealerships = get_dealers_from_cf(url)
+        # Concat all dealer's short name
+        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
+        # Return a list of dealer short name
+        return HttpResponse(dealer_names)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 # def get_dealer_details(request, dealer_id):
 # ...
+def get_dealer_details(request, dealername, id):
+    context = {}
+    if request.method == "GET":
+        url = "https://aa116696.us-south.apigw.appdomain.cloud/api/reviews/api/reviews"
+        context2={}
+        reviews = get_dealer_reviews_from_cf(url, id)
+        review_all = ' '.join([review_list.review for review_list in reviews])
+        context = reviews
+        context2["list"]=context
+        context2["dealername"]=dealername
+        context2["id"]=id
+        return render(request, 'djangoapp/dealer_details.html', context2)
+
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
