@@ -87,14 +87,14 @@ class DealerReview:
         self.purchase = purchase
         self.id = id
         self.review = review
-        self.sentiment = sentiment
+        self.sentiment = sentiment    
         
         if purchase:
             self.purchase_date = kwargs["purchase_date"]
             self.car_make = kwargs["car_make"]
             self.car_model = kwargs["car_model"]
             self.car_year = kwargs["car_year"]
-        
-        
+
     def __str__(self):
         return "Review: " + self.review
+       
