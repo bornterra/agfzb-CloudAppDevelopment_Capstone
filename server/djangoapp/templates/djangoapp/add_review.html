@@ -10,43 +10,79 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
 </head>
-    <body>
-        <div class = "container">
-            <form action="{% url 'djangoapp:postreview' id dealer%}" method="POST">
-            {% csrf_token %}
-                <h3>
-                Add a review about {{dealer}}
-                
-                </h3>
-                <div class="form-group">
-                    <label for="content">Enter the review content:</label>
-                    <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
-                </div>
-                <div class="checkbox">
-                    <label><input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">Has purchased the Car from {{dealer}}?</label>
-                </div>
-                <div class="form-group">
-                <label>Select your car(model-make-year):</label>
-                <select name="car" id="car" class="form-select" required>
-                {% for car in cars %}
-                 <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year }}</option>
-                {% endfor %}
-                </select>
-                </div>
-                <div class="form-group">
-                <label>Select your purchase date:<input class="date-own form-control" type="text" name="purchasedate" id="purchasedate"></label>
-                </div>
-                <div class="form-group">
-                <button type="submit" class="btn btn-primary mb-3">Submit</button>
-                </div>
-        
-            </form>
+<body>
+<!-- Remove this line the first time you edit this file -->
+<!-- This is the index page of your Django app! -->
+<!--Add a nav bar here -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'djangoapp:index' %}"><h5>Welcome to Best Cars!</h5></a>
+            </div>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="{% url 'djangoapp:about' %}" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="{% url 'djangoapp:contact' %}" class="nav-link">Contact Us</a></li>
             
+            
+                {% if user.is_authenticated %}
+                <li>
+                    <a class="btn btn-link" href="#">{{ user.first_name }}({{ user.username }})</a>
+                    <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li>
+                    <form class="form-inline" action="{% url 'djangoapp:login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" >
+                        <input type="password" class="form-control" placeholder="Password" name="psw" >
+                        <button class="btn btn-primary" type="submit">Login</button>
+                        <a class="btn btn-link" href="{% url 'djangoapp:registration' %}">Sign Up</a>
+                    </div>
+                    </form>
+                </li>
+                {% endif %}
+                
+            </ul>
         </div>
-        <script type="text/javascript">
-            $('.date-own').datepicker({
-               format: 'mm/dd/yyyy'
-             });
-       </script>
-    </body>
+    </nav>
+        <div class = "container">
+        <form action="{% url 'djangoapp:postreview' id dealer%}" method="POST">
+        {% csrf_token %}
+            <h3>
+            Add a review about {{dealer}}
+            
+            </h3>
+            <div class="form-group">
+                <label for="content">Enter the review content:</label>
+                <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+            </div>
+            <div class="checkbox">
+                <label><input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">Has purchased the Car from {{dealer}}?</label>
+            </div>
+            <div class="form-group">
+            <label>Select your car(model-make-year):</label>
+            <select name="car" id="car" class="form-select" required>
+            {% for car in cars %}
+                <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year }}</option>
+            {% endfor %}
+            </select>
+            </div>
+            <div class="form-group">
+            <label>Select your purchase date:</label>
+            <input class="date-own form-control" style="width: 30%;" type="text" name="purchasedate" id="purchasedate">
+            </div>
+            <div class="form-group">
+            <button type="submit" class="btn btn-primary mb-3">Submit</button>
+            </div>        
+        </form>            
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.date-own').datepicker({
+            format: 'mm/dd/yyyy'
+        });
+    });
+</script>
 </html>
