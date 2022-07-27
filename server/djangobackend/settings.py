@@ -27,7 +27,7 @@ DEBUG = True
 
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = ["localhost", 'asode.mybluemix.net', 'asode.mybluemix.net/static']
+ALLOWED_HOSTS = ['localhost', 'localhost:8000', 'asode.mybluemix.net', 'asode.mybluemix.net/static', 'https://eghae66-8000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai']
 
 
 # Application definition
